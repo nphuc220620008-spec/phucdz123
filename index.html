@@ -13,12 +13,12 @@ body{
     overflow-x:hidden;
 }
 
-/* ===== HOA RƠI ===== */
+/* ===== LÁ RƠI ===== */
 .flower{
     position:fixed;
-    top:-50px;
-    color:rgba(34,139,34,0.7);
-    font-size:18px;
+    top:-40px;
+    color:rgba(34,139,34,.8);
+    pointer-events:none;
     animation:fall linear infinite;
     z-index:999;
 }
@@ -30,15 +30,10 @@ body{
 .container{
     width:85%;
     margin:50px auto;
-    background:rgba(255,255,255,0.95);
+    background:rgba(255,255,255,.95);
     padding:40px;
     border-radius:20px;
     box-shadow:0 25px 50px rgba(0,0,0,.2);
-    animation:fadeUp 1.5s ease;
-}
-@keyframes fadeUp{
-    from{opacity:0;transform:translateY(60px)}
-    to{opacity:1;transform:translateY(0)}
 }
 
 /* ===== TITLE ===== */
@@ -48,21 +43,10 @@ h1{
     color:#1b5e20;
     letter-spacing:6px;
     text-shadow:0 0 20px rgba(27,94,32,.7);
-    animation:glow 2s infinite alternate;
 }
-@keyframes glow{
-    from{text-shadow:0 0 10px rgba(27,94,32,.5)}
-    to{text-shadow:0 0 30px rgba(27,94,32,1)}
-}
-
-.subtitle{
-    text-align:center;
-    font-style:italic;
-    margin-bottom:40px;
-}
+.subtitle{text-align:center;font-style:italic;margin-bottom:40px}
 
 /* ===== SECTION ===== */
-.section{margin-bottom:45px}
 h2{
     color:#2e7d32;
     border-left:6px solid #1b5e20;
@@ -72,7 +56,6 @@ h2{
 /* ===== SLIDESHOW ===== */
 .slideshow{
     position:relative;
-    width:100%;
     height:260px;
     overflow:hidden;
     border-radius:18px;
@@ -84,10 +67,36 @@ h2{
     height:100%;
     object-fit:cover;
     opacity:0;
-    transition:opacity 1.5s ease;
+    transition:1.2s;
     cursor:pointer;
 }
 .slideshow img.active{opacity:1}
+
+/* ===== VIDEO ===== */
+.video-box{
+    position:relative;
+    height:260px;
+    margin-top:20px;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+    cursor:pointer;
+}
+.video-box video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.play-icon{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:70px;
+    color:white;
+    background:rgba(0,0,0,.35);
+}
 
 /* ===== LIGHTBOX ===== */
 #lightbox{
@@ -99,22 +108,21 @@ h2{
     justify-content:center;
     z-index:1000;
 }
-#lightbox img{
+#lightbox img,
+#lightbox video{
     max-width:90%;
     max-height:90%;
     border-radius:15px;
-    box-shadow:0 0 40px #fff;
 }
 
 /* ===== POEM ===== */
 .poem{
-    background:linear-gradient(135deg,#ffffff,#f1f8e9);
+    background:#f1f8e9;
     padding:25px;
     border-radius:15px;
     border-left:6px solid #1b5e20;
     font-style:italic;
     line-height:1.8;
-    box-shadow:0 10px 25px rgba(0,0,0,.15);
 }
 
 /* ===== FOOTER ===== */
@@ -125,7 +133,6 @@ footer{
     color:#555;
 }
 
-/* ===== MOBILE ===== */
 @media(max-width:600px){
     h1{font-size:40px}
     .container{width:95%;padding:25px}
@@ -136,41 +143,42 @@ footer{
 <body>
 
 <!-- LIGHTBOX -->
-<div id="lightbox" onclick="this.style.display='none'">
+<div id="lightbox" onclick="closeLightbox()">
     <img id="lightbox-img">
+    <video id="lightbox-video" controls></video>
 </div>
 
 <div class="container">
     <h1>BÁO TƯỜNG</h1>
     <p class="subtitle">Chào mừng ngày 26/3 – Ngày thành lập Đoàn TNCS Hồ Chí Minh</p>
 
-    <div class="section">
-        <h2>Lời Ngỏ</h2>
-        <p>
-            Ngày 26/3 là dấu mốc thiêng liêng của tuổi trẻ Việt Nam – ngày
-            Đoàn Thanh niên Cộng sản Hồ Chí Minh ra đời. Đây là dịp để mỗi
-            đoàn viên, thanh niên ôn lại truyền thống vẻ vang, hun đúc
-            lý tưởng sống đẹp, sống có ích cho xã hội và Tổ quốc.
-        </p>
+    <h2>Lời Ngỏ</h2>
+    <p>
+        Ngày 26/3 là dấu mốc thiêng liêng của tuổi trẻ Việt Nam – nơi hun đúc
+        lý tưởng sống đẹp, sống có ích cho xã hội và Tổ quốc.
+    </p>
+
+    <h2>Góc Hình Ảnh</h2>
+    <div class="slideshow">
+        <img src="doan1.jpg" class="active">
+        <img src="doan2.jpg">
+        <img src="doan3.jpg">
     </div>
 
-    <div class="section">
-        <h2>Góc Hình Ảnh</h2>
-        <div class="slideshow">
-            <img src="doan1.jpg" class="active">
-            <img src="doan2.jpg">
-            <img src="doan3.jpg">
-        </div>
+    <h2>Góc Video</h2>
+    <div class="video-box" onclick="openVideo('doan-video.mp4')">
+        <video muted>
+            <source src="doan-video.mp4" type="video/mp4">
+        </video>
+        <div class="play-icon">▶</div>
     </div>
 
-    <div class="section">
-        <h2>Góc Thơ</h2>
-        <div class="poem">
-            Tuổi trẻ mang trong tim ngọn lửa<br>
-            Thắp sáng niềm tin khắp nẻo đường<br>
-            Dưới cờ Đoàn ta cùng tiến bước<br>
-            Xây đời, dựng nước, vững quê hương
-        </div>
+    <h2>Góc Thơ</h2>
+    <div class="poem">
+        Tuổi trẻ mang trong tim ngọn lửa<br>
+        Thắp sáng niềm tin khắp nẻo đường<br>
+        Dưới cờ Đoàn ta cùng tiến bước<br>
+        Xây đời, dựng nước, vững quê hương
     </div>
 
     <footer>
@@ -179,36 +187,59 @@ footer{
 </div>
 
 <script>
-/* ===== HOA RƠI ===== */
+/* ===== LÁ RƠI ===== */
 setInterval(()=>{
     let f=document.createElement("div");
     f.className="flower";
-    f.innerHTML="🍃";
+    f.innerHTML="⭐";
     f.style.left=Math.random()*100+"vw";
-    f.style.animationDuration=5+Math.random()*5+"s";
-    f.style.fontSize=14+Math.random()*16+"px";
+    f.style.fontSize=14+Math.random()*18+"px";
+    f.style.animationDuration=4+Math.random()*6+"s";
     document.body.appendChild(f);
     setTimeout(()=>f.remove(),10000);
-},500);
+},400);
 
 /* ===== SLIDESHOW ===== */
-let slides=document.querySelectorAll(".slideshow img");
-let index=0;
+let slides=document.querySelectorAll(".slideshow img"),i=0;
 setInterval(()=>{
-    slides[index].classList.remove("active");
-    index=(index+1)%slides.length;
-    slides[index].classList.add("active");
-},3500);
+    slides[i].classList.remove("active");
+    i=(i+1)%slides.length;
+    slides[i].classList.add("active");
+},3000);
 
-/* ===== LIGHTBOX ===== */
+/* ===== IMAGE LIGHTBOX ===== */
 slides.forEach(img=>{
     img.onclick=()=>{
-        document.getElementById("lightbox").style.display="flex";
+        document.getElementById("lightbox-img").style.display="block";
+        document.getElementById("lightbox-video").style.display="none";
         document.getElementById("lightbox-img").src=img.src;
+        lightbox.style.display="flex";
     }
 });
+
+/* ===== VIDEO LIGHTBOX ===== */
+function openVideo(src){
+    let img=document.getElementById("lightbox-img");
+    let video=document.getElementById("lightbox-video");
+
+    img.style.display="none";
+    video.style.display="block";
+    video.src=src;
+    video.play();
+    lightbox.style.display="flex";
+}
+
+function closeLightbox(){
+    let video=document.getElementById("lightbox-video");
+    video.pause();
+    video.src="";
+    lightbox.style.display="none";
+}
 </script>
 
 </body>
 </html>
+</body>
+</html>
+
 
